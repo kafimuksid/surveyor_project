@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import './splash_screen.dart';
+import 'splash_screen.dart';
+
 class SurveyForm extends StatefulWidget {
   SurveyForm({Key key}) : super(key: key);
   @override
@@ -19,16 +22,17 @@ class _SurveyFormState extends State<SurveyForm> {
   Map mapResponse3;
   Map mapResponse4;
   Map mapResponse5;
-  Map mapResponseq1;
-  Map mapResponseq2;
-  Map mapResponseq3;
-  Map mapResponseq4;
-  Map mapResponseq5;
-  Map mapResponset1;
-  Map mapResponset2;
-  Map mapResponset3;
-  Map mapResponset4;
-  Map mapResponset5;
+  String mapResponseq1;
+  String mapResponseq2;
+  String mapResponseq3;
+  String mapResponseq4;
+  String mapResponseq5;
+  String mapResponset1;
+  String mapResponset2;
+  String mapResponset3;
+  String mapResponset4;
+  String mapResponset5;
+  bool checkedboxvalue;
 
   Future fetchdata() async {
     http.Response response;
@@ -76,6 +80,7 @@ class _SurveyFormState extends State<SurveyForm> {
           hintText: 'Write your answer here *', //survey form textbox
         ),
         keyboardType: TextInputType.text,
+        // ignore: missing_return
         validator: (text) {
           //textbox validator
           if (text == null || text.isEmpty) {
@@ -98,22 +103,52 @@ class _SurveyFormState extends State<SurveyForm> {
         // },
       );
     } else if (types == 'multiple choice') {
-      Column(
-        children: <Widget>[
-          ListTile(
-            title: const Text('Thomas Jefferson'),
-            leading: Radio(
-              value: MultipleChoiceAns.select,
-              groupValue: _mood,
-              onChanged: (MultipleChoiceAns value) {
-                setState(() {
-                  _mood = value;
-                });
-              },
-            ),
+      PopupMenuButton<MultipleChoiceAns>(
+        onSelected: (MultipleChoiceAns result) {
+          setState(() {});
+        },
+        itemBuilder: (BuildContext context) =>
+            <PopupMenuEntry<MultipleChoiceAns>>[
+          const PopupMenuItem<MultipleChoiceAns>(
+            value: MultipleChoiceAns.select,
+            child: Icon(Icons.list),
+          ),
+          const PopupMenuItem<MultipleChoiceAns>(
+            value: MultipleChoiceAns.verygood,
+            child: Icon(Icons.sentiment_very_satisfied),
+          ),
+          const PopupMenuItem<MultipleChoiceAns>(
+            value: MultipleChoiceAns.good,
+            child: Icon(Icons.sentiment_satisfied),
+          ),
+          const PopupMenuItem<MultipleChoiceAns>(
+            value: MultipleChoiceAns.neutral,
+            child: Icon(Icons.person),
+          ),
+          const PopupMenuItem<MultipleChoiceAns>(
+            value: MultipleChoiceAns.bad,
+            child: Icon(Icons.sentiment_dissatisfied),
+          ),
+          const PopupMenuItem<MultipleChoiceAns>(
+            value: MultipleChoiceAns.verybad,
+            child: Icon(Icons.sentiment_very_dissatisfied),
           ),
         ],
       );
+    } else if (types == 'Checkbox') {
+      Column(
+        children: [
+          Checkbox(
+              value: checkedboxvalue,
+              onChanged: (bool value) {
+                setState(() {
+                  checkedboxvalue = value;
+                });
+              })
+        ],
+      );
+    } else {
+      SplashScreen();
     }
 
     // return null;
@@ -128,17 +163,54 @@ class _SurveyFormState extends State<SurveyForm> {
           : Column(
               children: <Widget>[
                 Text(
-                  mapResponseq1.toString(),
+                  mapResponseq1,
                 ),
                 SizedBox(
                   height: 10.0,
                 ),
-                typeChecker(mapResponset1.toString()),
+                typeChecker(mapResponset1),
                 SizedBox(
                   height: 10.0,
                 ),
                 Text(
-                  mapResponseq2.toString(),
+                  mapResponseq2,
+                ),
+                SizedBox(
+                  height: 10.0,
+                ),
+                typeChecker(mapResponset2),
+                SizedBox(
+                  height: 10.0,
+                ),
+                Text(
+                  mapResponseq3,
+                ),
+                SizedBox(
+                  height: 10.0,
+                ),
+                typeChecker(mapResponset3),
+                SizedBox(
+                  height: 10.0,
+                ),
+                Text(
+                  mapResponseq4,
+                ),
+                SizedBox(
+                  height: 10.0,
+                ),
+                typeChecker(mapResponset4),
+                SizedBox(
+                  height: 10.0,
+                ),
+                Text(
+                  mapResponseq5,
+                ),
+                SizedBox(
+                  height: 10.0,
+                ),
+                typeChecker(mapResponset5),
+                SizedBox(
+                  height: 10.0,
                 ),
               ],
             ),
